@@ -40,6 +40,7 @@ define_config! {
         enable_warnings: Option<bool> = "enable-warnings",
         download_ci_llvm: Option<StringOrBool> = "download-ci-llvm",
         build_config: Option<HashMap<String, String>> = "build-config",
+        enable_projects: Option<String> = "enable-projects",
     }
 }
 
@@ -190,6 +191,7 @@ impl Config {
                 enable_warnings,
                 download_ci_llvm,
                 build_config,
+                enable_projects,
             } = llvm;
             if llvm_ccache.is_some() {
                 eprintln!("Warning: llvm.ccache is deprecated. Use build.ccache instead.");
@@ -228,6 +230,7 @@ impl Config {
             self.llvm_clang = clang.unwrap_or(false);
             self.llvm_enable_warnings = enable_warnings.unwrap_or(false);
             self.llvm_build_config = build_config.clone().unwrap_or(Default::default());
+            self.enable_projects = enable_projects.clone().unwrap_or(Default::default());
 
             self.llvm_from_ci = self.parse_download_ci_llvm(download_ci_llvm, self.llvm_assertions);
 
