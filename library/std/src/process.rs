@@ -2497,10 +2497,7 @@ pub fn exit(code: i32) -> ! {
 #[cold]
 #[cfg_attr(not(test), rustc_diagnostic_item = "process_abort")]
 pub fn abort() -> ! {
-    #[cfg(not(target_arch = "bpf"))]
     crate::sys::abort_internal();
-    #[cfg(target_arch = "bpf")]
-    unsafe { crate::sys::abort_internal(); }
 }
 
 /// Returns the OS-assigned process identifier associated with this process.

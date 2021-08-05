@@ -599,9 +599,9 @@ impl<'tcx> TyCtxt<'tcx> {
                     .file
                     .name
                     .for_scope(self.sess, RemapPathScopeComponents::MACRO)
-                    .to_string_lossy(),
-            )
+                    .to_string_lossy())
         };
+
         self.const_caller_location(
             file_name,
             caller.line as u32,
