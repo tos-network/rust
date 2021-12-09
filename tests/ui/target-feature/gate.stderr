@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 error[E0658]: the target feature `x87` is currently unstable
+=======
+error[E0658]: the target feature `avx512bw` is currently unstable
+>>>>>>> 533900b488d ([SOL] Rename bpf target to sbf)
   --> $DIR/gate.rs:29:18
    |
 LL | #[target_feature(enable = "x87")]

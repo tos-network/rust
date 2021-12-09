@@ -230,6 +230,7 @@ impl<T> ReentrantLock<T> {
     ///
     /// let lock = ReentrantLock::new(0);
     /// ```
+    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "sbf")))]
     pub const fn new(t: T) -> ReentrantLock<T> {
         ReentrantLock {
             mutex: sys::Mutex::new(),
@@ -282,6 +283,7 @@ impl<T: ?Sized> ReentrantLock<T> {
     /// }).join().expect("thread::spawn failed");
     /// assert_eq!(lock.lock().get(), 10);
     /// ```
+    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "sbf")))]
     pub fn lock(&self) -> ReentrantLockGuard<'_, T> {
         let this_thread = current_id();
         // Safety: We only touch lock_count when we own the inner mutex.
@@ -327,6 +329,7 @@ impl<T: ?Sized> ReentrantLock<T> {
     ///
     /// This function does not block.
     // FIXME maybe make it a public part of the API?
+    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "sbf")))]
     #[unstable(issue = "none", feature = "std_internals")]
     #[doc(hidden)]
     pub fn try_lock(&self) -> Option<ReentrantLockGuard<'_, T>> {
