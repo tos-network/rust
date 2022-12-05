@@ -3495,6 +3495,7 @@ impl Target {
             "loongarch64" => (Architecture::LoongArch64, None),
             "csky" => (Architecture::Csky, None),
             "arm64ec" => (Architecture::Aarch64, Some(object::SubArchitecture::Arm64EC)),
+            "sbf" => (Architecture::Sbf, None),
             // Unsupported architecture.
             _ => return None,
         })
