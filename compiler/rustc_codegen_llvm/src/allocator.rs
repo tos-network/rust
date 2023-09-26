@@ -81,16 +81,18 @@ pub(crate) unsafe fn codegen(
         let llval = llvm::LLVMConstInt(i8, val as u64, False);
         llvm::set_initializer(ll_g, llval);
 
-        // __rust_no_alloc_shim_is_unstable_v2
-        create_wrapper_function(
-            tcx,
-            &cx,
-            &mangle_internal_symbol(tcx, NO_ALLOC_SHIM_IS_UNSTABLE),
-            None,
-            &[],
-            None,
-            false,
-        );
+        if tcx.sess.target.arch != "sbf" {
+            // __rust_no_alloc_shim_is_unstable_v2
+            create_wrapper_function(
+                tcx,
+                &cx,
+                &mangle_internal_symbol(tcx, NO_ALLOC_SHIM_IS_UNSTABLE),
+                None,
+                &[],
+                None,
+                false,
+            );
+        }
     }
 
     if tcx.sess.opts.debuginfo != DebugInfo::None {
