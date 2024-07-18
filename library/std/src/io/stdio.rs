@@ -47,18 +47,21 @@ static OUTPUT_CAPTURE_USED: Atomic<bool> = AtomicBool::new(false);
 ///
 /// This handle is not synchronized or buffered in any fashion. Constructed via
 /// the `std::io::stdio::stdin_raw` function.
+#[cfg(not(target_family = "solana"))]
 struct StdinRaw(stdio::Stdin);
 
 /// A handle to a raw instance of the standard output stream of this process.
 ///
 /// This handle is not synchronized or buffered in any fashion. Constructed via
 /// the `std::io::stdio::stdout_raw` function.
+#[cfg(not(target_family = "solana"))]
 struct StdoutRaw(stdio::Stdout);
 
 /// A handle to a raw instance of the standard output stream of this process.
 ///
 /// This handle is not synchronized or buffered in any fashion. Constructed via
 /// the `std::io::stdio::stderr_raw` function.
+#[cfg(not(target_family = "solana"))]
 struct StderrRaw(stdio::Stderr);
 
 /// Constructs a new raw handle to the standard input of this process.
@@ -102,6 +105,7 @@ const fn stderr_raw() -> StderrRaw {
     StderrRaw(stdio::Stderr::new())
 }
 
+#[cfg(not(target_family = "solana"))]
 impl Read for StdinRaw {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
         handle_ebadf(self.0.read(buf), || Ok(0))
@@ -143,6 +147,7 @@ impl Read for StdinRaw {
     }
 }
 
+#[cfg(not(target_family = "solana"))]
 impl Write for StdoutRaw {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         handle_ebadf(self.0.write(buf), || Ok(buf.len()))
@@ -175,6 +180,7 @@ impl Write for StdoutRaw {
     }
 }
 
+#[cfg(not(target_family = "solana"))]
 impl Write for StderrRaw {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         handle_ebadf(self.0.write(buf), || Ok(buf.len()))
@@ -207,6 +213,7 @@ impl Write for StderrRaw {
     }
 }
 
+#[cfg(not(target_family = "solana"))]
 fn handle_ebadf<T>(r: io::Result<T>, default: impl FnOnce() -> io::Result<T>) -> io::Result<T> {
     match r {
         Err(ref e) if stdio::is_ebadf(e) => default(),
@@ -293,6 +300,7 @@ pub struct Stdin {
 /// ```
 #[must_use = "if unused stdin will immediately unlock"]
 #[stable(feature = "rust1", since = "1.0.0")]
+#[cfg(not(target_family = "solana"))]
 pub struct StdinLock<'a> {
     inner: MutexGuard<'a, BufReader<StdinRaw>>,
 }
@@ -491,6 +499,7 @@ impl Read for Stdin {
 }
 
 #[stable(feature = "read_shared_stdin", since = "1.78.0")]
+#[cfg(not(target_family = "solana"))]
 impl Read for &Stdin {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
         self.lock().read(buf)
@@ -521,7 +530,7 @@ impl Read for &Stdin {
 
 #[stable(feature = "rust1", since = "1.0.0")]
 #[cfg(target_family = "solana")]
-impl Read for Stdin {
+impl Read for &Stdin {
     fn read(&mut self, _buf: &mut [u8]) -> io::Result<usize> {
         Ok(0)
     }
@@ -555,6 +564,7 @@ impl StdinLock<'_> {
 }
 
 #[stable(feature = "rust1", since = "1.0.0")]
+#[cfg(not(target_family = "solana"))]
 impl Read for StdinLock<'_> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
         self.inner.read(buf)
@@ -590,6 +600,7 @@ impl Read for StdinLock<'_> {
     }
 }
 
+#[cfg(not(target_family = "solana"))]
 impl SpecReadByte for StdinLock<'_> {
     #[inline]
     fn spec_read_byte(&mut self) -> Option<io::Result<u8>> {
@@ -597,6 +608,7 @@ impl SpecReadByte for StdinLock<'_> {
     }
 }
 
+#[cfg(not(target_family = "solana"))]
 #[stable(feature = "rust1", since = "1.0.0")]
 impl BufRead for StdinLock<'_> {
     fn fill_buf(&mut self) -> io::Result<&[u8]> {
@@ -616,6 +628,7 @@ impl BufRead for StdinLock<'_> {
     }
 }
 
+#[cfg(not(target_family = "solana"))]
 #[stable(feature = "std_debug", since = "1.16.0")]
 impl fmt::Debug for StdinLock<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -943,10 +956,20 @@ impl Write for &Stdout {
 }
 
 #[stable(feature = "catch_unwind", since = "1.9.0")]
+#[cfg(not(target_family = "solana"))]
 impl UnwindSafe for StdoutLock<'_> {}
 
 #[stable(feature = "catch_unwind", since = "1.9.0")]
+#[cfg(target_family = "solana")]
+impl UnwindSafe for StdoutLock {}
+
+#[stable(feature = "catch_unwind", since = "1.9.0")]
+#[cfg(not(target_family = "solana"))]
 impl RefUnwindSafe for StdoutLock<'_> {}
+
+#[stable(feature = "catch_unwind", since = "1.9.0")]
+#[cfg(target_family = "solana")]
+impl RefUnwindSafe for StdoutLock {}
 
 #[stable(feature = "rust1", since = "1.0.0")]
 #[cfg(not(target_family = "solana"))]
@@ -1259,10 +1282,20 @@ impl Write for &Stderr {
 }
 
 #[stable(feature = "catch_unwind", since = "1.9.0")]
+#[cfg(not(target_family = "solana"))]
 impl UnwindSafe for StderrLock<'_> {}
 
 #[stable(feature = "catch_unwind", since = "1.9.0")]
+#[cfg(target_family = "solana")]
+impl UnwindSafe for StderrLock {}
+
+#[stable(feature = "catch_unwind", since = "1.9.0")]
+#[cfg(not(target_family = "solana"))]
 impl RefUnwindSafe for StderrLock<'_> {}
+
+#[stable(feature = "catch_unwind", since = "1.9.0")]
+#[cfg(target_family = "solana")]
+impl RefUnwindSafe for StderrLock {}
 
 #[stable(feature = "rust1", since = "1.0.0")]
 #[cfg(not(target_family = "solana"))]
@@ -1323,6 +1356,7 @@ pub fn set_output_capture(sink: Option<LocalStream>) -> Option<LocalStream> {
 /// Tries to set the thread-local output capture buffer and returns the old one.
 /// This may fail once thread-local destructors are called. It's used in panic
 /// handling instead of `set_output_capture`.
+#[cfg(not(target_family = "solana"))]
 #[unstable(
     feature = "internal_output_capture",
     reason = "this function is meant for use in the test crate \
@@ -1339,6 +1373,21 @@ pub fn try_set_output_capture(
     }
     OUTPUT_CAPTURE_USED.store(true, Ordering::Relaxed);
     OUTPUT_CAPTURE.try_with(move |slot| slot.replace(sink))
+}
+
+/// Dummy version for satisfying test library dependencies when building the SBF target.
+#[cfg(target_family = "solana")]
+#[unstable(
+    feature = "internal_output_capture",
+    reason = "this function is meant for use in the test crate \
+    and may disappear in the future",
+    issue = "none"
+)]
+#[doc(hidden)]
+pub fn try_set_output_capture(
+    _sink: Option<LocalStream>,
+) -> Result<Option<LocalStream>, AccessError> {
+    Ok(None)
 }
 
 /// Dummy version for satisfying test library dependencies when building the SBF target.

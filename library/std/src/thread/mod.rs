@@ -155,7 +155,7 @@
 // Under `test`, `__FastLocalKeyInner` seems unused.
 #![cfg_attr(test, allow(dead_code))]
 
-#[cfg(all(test, not(any(target_os = "emscripten", target_os = "wasi"))))]
+#[cfg(all(test, not(any(target_os = "emscripten", target_os = "wasi", not(target_family = "solana")))))]
 mod tests;
 
 use crate::any::Any;
@@ -165,6 +165,7 @@ use crate::marker::PhantomData;
 use crate::mem::{self, ManuallyDrop, forget};
 use crate::num::NonZero;
 use crate::pin::Pin;
+#[cfg(not(target_family = "solana"))]
 use crate::sync::Arc;
 use crate::sync::atomic::{Atomic, AtomicUsize, Ordering};
 use crate::sys::sync::Parker;
@@ -617,10 +618,12 @@ impl Builder {
         'scope: 'a,
     {
         let Builder { name, stack_size } = self;
-        let stack_size = stack_size.unwrap_or_else(thread::min_stack);
-        let my_thread = Thread::new(name.map(|name| {
-            CString::new(name).expect("thread name may not contain interior null bytes")
-        }));
+        let stack_size = stack_size.unwrap_or_default();
+        let my_thread = name.map_or_else(Thread::new_unnamed, |name| unsafe {
+            Thread::new(
+                CString::new(name).expect("thread name may not contain interior null bytes"),
+            )
+        });
         let their_thread = my_thread.clone();
         let my_packet: Arc<Packet<'scope, T>> = Arc::new(Packet {
             scope: scope_data,
