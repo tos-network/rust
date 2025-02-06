@@ -108,8 +108,6 @@ jobs:
     continue-on-error: ${{ matrix.continue_on_error || false }}
     strategy:
       matrix:
-        # Check the `calculate_matrix` job to see how is the matrix defined.
-        include: ${{ fromJSON(needs.calculate_matrix.outputs.jobs) }}
     steps:
       - name: Install cargo in AWS CodeBuild
         if: matrix.codebuild
