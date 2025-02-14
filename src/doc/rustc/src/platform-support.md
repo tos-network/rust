@@ -391,6 +391,10 @@ target | std | host | notes
 [`riscv64imac-unknown-nuttx-elf`](platform-support/nuttx.md) | ✓ |  | RISC-V 64bit with NuttX
 [`s390x-unknown-linux-musl`](platform-support/s390x-unknown-linux-musl.md) | ✓ |  | S390x Linux (kernel 3.2, musl 1.2.3)
 `sbf-solana-solana` | ✓ |  | SBF
+`sbpf-solana-solana` | ✓ |  | SBPF
+`sbpfv1-solana-solana` | ✓ |  | SBPF v1
+`sbpfv2-solana-solana` | ✓ |  | SBPF v2
+`sbpfv3-solana-solana` | ✓ |  | SBPF v3
 `sparc-unknown-linux-gnu` | ✓ |  | 32-bit SPARC Linux
 [`sparc-unknown-none-elf`](./platform-support/sparc-unknown-none-elf.md) | * |  | Bare 32-bit SPARC V7+
 [`sparc64-unknown-netbsd`](platform-support/netbsd.md) | ✓ | ✓ | NetBSD/sparc64
