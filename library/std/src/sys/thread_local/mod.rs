@@ -29,6 +29,7 @@ cfg_if::cfg_if! {
         target_os = "uefi",
         target_os = "zkvm",
         target_os = "trusty",
+        target_os = "solana",
     ))] {
         mod no_threads;
         pub use no_threads::{EagerStorage, LazyStorage, thread_local_inner};
@@ -117,6 +118,8 @@ pub(crate) mod guard {
         } else if #[cfg(target_os = "solid_asp3")] {
             mod solid;
             pub(crate) use solid::enable;
+        } else if #[cfg(target_os = "solana")] {
+
         } else {
             mod key;
             pub(crate) use key::enable;

@@ -36,6 +36,11 @@ const STAGE0_MISSING_TARGETS: &[&str] = &[
     // just a dummy comment so the list doesn't get onelined
     "loongarch32-unknown-none",
     "loongarch32-unknown-none-softfloat",
+    "sbf-solana-solana",
+    "sbpf-solana-solana",
+    "sbpfv1-solana-solana",
+    "sbpfv2-solana-solana",
+    "sbpfv3-solana-solana",
 ];
 
 /// Minimum version threshold for libstdc++ required when using prebuilt LLVM

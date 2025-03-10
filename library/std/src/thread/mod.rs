@@ -162,17 +162,20 @@ use crate::any::Any;
 use crate::cell::UnsafeCell;
 use crate::ffi::CStr;
 use crate::marker::PhantomData;
-use crate::mem::{self, ManuallyDrop, forget};
+use crate::mem::{self, forget};
+#[cfg(not(target_family = "solana"))]
+use crate::mem::ManuallyDrop;
 use crate::num::NonZero;
 use crate::pin::Pin;
-#[cfg(not(target_family = "solana"))]
 use crate::sync::Arc;
 use crate::sync::atomic::{Atomic, AtomicUsize, Ordering};
 use crate::sys::sync::Parker;
 use crate::sys::thread as imp;
 use crate::sys_common::{AsInner, IntoInner};
 use crate::time::{Duration, Instant};
-use crate::{env, fmt, io, panic, panicking, str};
+use crate::{fmt, io, panic, panicking, str};
+#[cfg(not(target_family = "solana"))]
+use crate::env;
 
 #[stable(feature = "scoped_threads", since = "1.63.0")]
 mod scoped;
@@ -184,6 +187,7 @@ mod current;
 
 #[stable(feature = "rust1", since = "1.0.0")]
 pub use current::current;
+#[cfg(not(target_family = "solana"))]
 pub(crate) use current::{current_id, current_or_unnamed, drop_current};
 use current::{set_current, try_with_current};
 
@@ -459,7 +463,7 @@ impl Builder {
     /// [`io::Result`]: crate::io::Result
     #[stable(feature = "thread_spawn_unchecked", since = "1.82.0")]
     #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
-    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "sbf")))]
+    #[cfg(all(not(target_arch = "sbf")))]
     pub unsafe fn spawn_unchecked<F, T>(self, f: F) -> io::Result<JoinHandle<T>>
     where
         F: FnOnce() -> T,
@@ -617,13 +621,17 @@ impl Builder {
         T: Send + 'a,
         'scope: 'a,
     {
-        let Builder { name, stack_size } = self;
+        let Builder { name, stack_size, .. } = self;
         let stack_size = stack_size.unwrap_or_default();
-        let my_thread = name.map_or_else(Thread::new_unnamed, |name| unsafe {
+        let my_thread = if let Some(name) = name {
             Thread::new(
-                CString::new(name).expect("thread name may not contain interior null bytes"),
+                ThreadId::new(),
+                name,
             )
-        });
+        } else {
+            Thread::new_unnamed(ThreadId::new())
+        };
+
         let their_thread = my_thread.clone();
         let my_packet: Arc<Packet<'scope, T>> = Arc::new(Packet {
             scope: scope_data,
