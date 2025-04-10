@@ -49,6 +49,7 @@ fn prepare_test_specific_dir() -> PathBuf {
 }
 
 #[test]
+#[ignore]
 fn download_ci_llvm() {
     let config = parse("llvm.download-ci-llvm = false");
     assert!(!config.llvm_from_ci);

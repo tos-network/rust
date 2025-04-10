@@ -41,6 +41,11 @@ COPY host-x86_64/mingw-check-1/check-default-config-profiles.sh /scripts/
 COPY host-x86_64/mingw-check-1/validate-toolstate.sh /scripts/
 COPY host-x86_64/mingw-check-1/validate-error-codes.sh /scripts/
 
+ENV RUN_CHECK_WITH_PARALLEL_QUERIES 1
+ENV NO_DOWNLOAD_CI_RUSTC 1
+ENV NO_DOWNLOAD_CI_LLVM 1
+
+
 # Check library crates on all tier 1 targets.
 # We disable optimized compiler built-ins because that requires a C toolchain for the target.
 # We also skip the x86_64-unknown-linux-gnu target as it is well-tested by other jobs.
