@@ -33,6 +33,7 @@ cfg_if::cfg_if! {
     ))] {
         mod no_threads;
         pub use no_threads::{EagerStorage, LazyStorage, thread_local_inner};
+        #[cfg(not(target_family = "solana"))]
         pub(crate) use no_threads::{LocalPointer, local_pointer};
     } else if #[cfg(target_thread_local)] {
         mod native;

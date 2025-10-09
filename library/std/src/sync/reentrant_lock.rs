@@ -91,7 +91,9 @@ pub struct ReentrantLock<T: ?Sized> {
 
 cfg_if!(
     if #[cfg(target_has_atomic = "64")] {
-        use crate::sync::atomic::{Atomic, AtomicU64, Ordering::Relaxed};
+        #[cfg(not(target_family = "solana"))]
+        use crate::sync::atomic::AtomicU64;
+        use crate::sync::atomic::{Atomic, Ordering::Relaxed};
 
         struct Tid(Atomic<u64>);
 

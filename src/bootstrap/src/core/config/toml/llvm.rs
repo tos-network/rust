@@ -121,6 +121,7 @@ pub fn check_incompatible_options_for_ci_llvm(
         download_ci_llvm: _,
         build_config,
         enzyme,
+        ..
     } = ci_llvm_config;
 
     err!(current_llvm_config.optimize, optimize);
@@ -230,7 +231,7 @@ impl Config {
             self.llvm_clang = clang.unwrap_or(false);
             self.llvm_enable_warnings = enable_warnings.unwrap_or(false);
             self.llvm_build_config = build_config.clone().unwrap_or(Default::default());
-            self.enable_projects = enable_projects.clone().unwrap_or(Default::default());
+            self.llvm_enable_projects = enable_projects.clone();
 
             self.llvm_from_ci = self.parse_download_ci_llvm(download_ci_llvm, self.llvm_assertions);
 

@@ -30,13 +30,16 @@ mod is_terminal {
             mod hermit;
             pub use hermit::*;
         } else {
+            #[cfg(not(target_family = "solana"))]
             mod unsupported;
+            #[cfg(not(target_family = "solana"))]
             pub use unsupported::*;
         }
     }
 }
 
 pub use io_slice::{IoSlice, IoSliceMut};
+#[cfg(not(target_family = "solana"))]
 pub use is_terminal::is_terminal;
 
 // Bare metal platforms usually have very small amounts of RAM

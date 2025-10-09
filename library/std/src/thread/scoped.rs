@@ -1,4 +1,5 @@
-use super::{Builder, JoinInner, Result, Thread, current_or_unnamed};
+use super::current_or_unnamed;
+use super::{Builder, JoinInner, Result, Thread};
 use crate::marker::PhantomData;
 use crate::panic::{AssertUnwindSafe, catch_unwind, resume_unwind};
 use crate::sync::Arc;
