@@ -611,6 +611,11 @@ pub fn std_cargo(builder: &Builder<'_>, target: TargetSelection, stage: u32, car
         features += "compiler-builtins-no-f16-f128 ";
     }
 
+    // TOS/BPF: eBPF doesn't support f16/f128 operations
+    if target.starts_with("tbf") || target.starts_with("bpf") {
+        features += "compiler-builtins-no-f16-f128 ";
+    }
+
     if builder.no_std(target) == Some(true) {
         features += " compiler-builtins-mem";
         if !target.starts_with("tbf") && !target.starts_with("bpf") {
