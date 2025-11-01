@@ -178,7 +178,7 @@ pub fn collect_crate_types(session: &Session, attrs: &[ast::Attribute]) -> Vec<C
     // If we're generating a test executable, then ignore all other output
     // styles at all other locations
     if session.opts.test {
-        if session.target.arch == "bpf" || session.target.arch == "sbf" {
+        if session.target.arch == "bpf" || session.target.arch == "tbf" {
             return vec![CrateType::Cdylib];
         }
 

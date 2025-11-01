@@ -7,7 +7,7 @@
 use run_make_support::{diff, rustdoc};
 
 fn main() {
-    // Rustdoc is not compiled for solana
+    // Rustdoc is not compiled for tos
     // let out = rustdoc().output_format("json").input("x.html").run_fail().stderr_utf8();
     // diff().expected_file("output-format-json.stderr").actual_text("actual-json", out).run();
 }

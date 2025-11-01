@@ -3,9 +3,9 @@
 #![stable(feature = "std_panic", since = "1.9.0")]
 
 use crate::any::Any;
-#[cfg(not(any(target_arch = "sbf")))]
+#[cfg(not(any(target_arch = "tbf")))]
 use crate::sync::atomic::{Atomic, AtomicU8, Ordering};
-#[cfg(not(any(target_arch = "sbf")))]
+#[cfg(not(any(target_arch = "tbf")))]
 use crate::sync::{Condvar, Mutex, RwLock};
 use crate::thread::Result;
 use crate::{collections, fmt, panicking};
@@ -49,7 +49,7 @@ pub struct PanicHookInfo<'a> {
 }
 
 impl<'a> PanicHookInfo<'a> {
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     #[inline]
     pub(crate) fn new(
         location: &'a Location<'a>,
@@ -255,7 +255,7 @@ pub use crate::panicking::{set_hook, take_hook};
 /// accessed later using [`PanicHookInfo::payload`].
 ///
 /// See the [`panic!`] macro for more information about panicking.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 #[stable(feature = "panic_any", since = "1.51.0")]
 #[inline]
 #[track_caller]
@@ -265,23 +265,23 @@ pub fn panic_any<M: 'static + Any + Send>(msg: M) -> ! {
 }
 
 #[stable(feature = "catch_unwind", since = "1.9.0")]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl<T: ?Sized> UnwindSafe for Mutex<T> {}
 #[stable(feature = "catch_unwind", since = "1.9.0")]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl<T: ?Sized> UnwindSafe for RwLock<T> {}
 #[stable(feature = "catch_unwind", since = "1.9.0")]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl UnwindSafe for Condvar {}
 
 #[stable(feature = "unwind_safe_lock_refs", since = "1.12.0")]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl<T: ?Sized> RefUnwindSafe for Mutex<T> {}
 #[stable(feature = "unwind_safe_lock_refs", since = "1.12.0")]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl<T: ?Sized> RefUnwindSafe for RwLock<T> {}
 #[stable(feature = "unwind_safe_lock_refs", since = "1.12.0")]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl RefUnwindSafe for Condvar {}
 
 // https://github.com/rust-lang/rust/issues/62301
@@ -397,14 +397,14 @@ pub fn catch_unwind<F: FnOnce() -> R + UnwindSafe, R>(f: F) -> Result<R> {
 /// }
 /// ```
 #[stable(feature = "resume_unwind", since = "1.9.0")]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub fn resume_unwind(payload: Box<dyn Any + Send>) -> ! {
     panicking::rust_panic_without_hook(payload)
 }
 
-/// SBF version of resume_unwind
+/// TBF version of resume_unwind
 #[stable(feature = "resume_unwind", since = "1.9.0")]
-#[cfg(target_family = "solana")]
+#[cfg(target_family = "tos")]
 pub fn resume_unwind(_payload: Box<dyn Any + Send>) -> ! {
     // Only used by thread, redirect to plain old panic
     panicking::begin_panic_fmt(&format_args!("unwind"))
@@ -448,7 +448,7 @@ pub fn always_abort() {
 
 /// The configuration for whether and how the default panic hook will capture
 /// and display the backtrace.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 #[unstable(feature = "panic_backtrace_config", issue = "93346")]
 #[non_exhaustive]
@@ -462,7 +462,7 @@ pub enum BacktraceStyle {
     Off,
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl BacktraceStyle {
     pub(crate) fn full() -> Option<Self> {
         if cfg!(feature = "backtrace") { Some(BacktraceStyle::Full) } else { None }
@@ -490,7 +490,7 @@ impl BacktraceStyle {
 // that backtrace.
 //
 // Internally stores equivalent of an Option<BacktraceStyle>.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 static SHOULD_CAPTURE: Atomic<u8> = AtomicU8::new(0);
 
 /// Configures whether the default panic hook will capture and display a
@@ -498,7 +498,7 @@ static SHOULD_CAPTURE: Atomic<u8> = AtomicU8::new(0);
 ///
 /// The default value for this setting may be set by the `RUST_BACKTRACE`
 /// environment variable; see the details in [`get_backtrace_style`].
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 #[unstable(feature = "panic_backtrace_config", issue = "93346")]
 pub fn set_backtrace_style(style: BacktraceStyle) {
     if cfg!(feature = "backtrace") {
@@ -528,7 +528,7 @@ pub fn set_backtrace_style(style: BacktraceStyle) {
 ///   the future
 ///
 /// Returns `None` if backtraces aren't currently supported.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 #[unstable(feature = "panic_backtrace_config", issue = "93346")]
 pub fn get_backtrace_style() -> Option<BacktraceStyle> {
     if !cfg!(feature = "backtrace") {

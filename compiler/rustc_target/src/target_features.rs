@@ -649,8 +649,8 @@ static WASM_FEATURES: &[(&str, Stability, ImpliedFeatures)] = &[
 const BPF_FEATURES: &[(&str, Stability, ImpliedFeatures)] =
     &[("alu32", Unstable(sym::bpf_target_feature), &[])];
 
-const SBF_FEATURES: &[(&str, Stability, ImpliedFeatures)] = &[
-    ("alu32", Unstable(sym::sbf_target_feature), &[]),
+const TBF_FEATURES: &[(&str, Stability, ImpliedFeatures)] = &[
+    ("alu32", Unstable(sym::tbf_target_feature), &[]),
     ("static-syscalls", Stable, &[]),
     ("dynamic-frames", Stable, &[]),
     ("abi-v2", Stable, &[]),
@@ -797,7 +797,7 @@ pub fn all_rust_features() -> impl Iterator<Item = (&'static str, Stability)> {
         .chain(IBMZ_FEATURES)
         .chain(SPARC_FEATURES)
         .chain(M68K_FEATURES)
-        .chain(SBF_FEATURES)
+        .chain(TBF_FEATURES)
         .cloned()
         .map(|(f, s, _)| (f, s))
 }
@@ -864,7 +864,7 @@ impl Target {
             "s390x" => IBMZ_FEATURES,
             "sparc" | "sparc64" => SPARC_FEATURES,
             "m68k" => M68K_FEATURES,
-            "sbf" => SBF_FEATURES,
+            "tbf" => TBF_FEATURES,
             _ => &[],
         }
     }

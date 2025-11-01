@@ -24,7 +24,7 @@ features = ["unstable-public-internals"]
 [dev-dependencies]
 paste = "1.0.15"
 
-[target.'cfg(not(target_arch = "sbf"))'.dev-dependencies]
+[target.'cfg(not(target_arch = "tbf"))'.dev-dependencies]
 criterion = { version = "0.5.1", default-features = false, features = ["cargo_bench_support"] }
 
 
@@ -103,8 +103,8 @@ required-features = ["icount"]
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = [
-    'cfg(target_family, values("solana"))',
+    'cfg(target_family, values("tos"))',
     'cfg(target_feature, values("static-syscalls"))',
-    'cfg(target_os, values("solana"))'
+    'cfg(target_os, values("tos"))'
 ] }
 

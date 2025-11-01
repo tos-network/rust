@@ -42,7 +42,7 @@ check-cfg = [
     'cfg(target_has_reliable_f16_math)',
     'cfg(target_has_reliable_f128)',
     'cfg(target_has_reliable_f128_math)',
-    'cfg(target_family, values("solana"))',
-    'cfg(target_arch, values("sbf"))',
+    'cfg(target_family, values("tos"))',
+    'cfg(target_arch, values("tbf"))',
     'cfg(target_feature, values("dynamic-frames"))',
 ]

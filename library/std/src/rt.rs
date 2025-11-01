@@ -21,15 +21,15 @@ pub use crate::panicking::{begin_panic, panic_count};
 pub use core::panicking::{panic_display, panic_fmt};
 
 #[rustfmt::skip]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::any::Any;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::sync::Once;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::sys;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::thread::{self, main_thread};
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::{mem, panic};
 
 // This function is needed by the panic runtime.
@@ -85,7 +85,7 @@ macro_rules! rtunwrap {
     };
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn handle_rt_panic<T>(e: Box<dyn Any + Send>) -> T {
     mem::forget(e);
     rtabort!("initialization or cleanup bug");
@@ -115,7 +115,7 @@ fn handle_rt_panic<T>(e: Box<dyn Any + Send>) -> T {
 // Even though it is an `u8`, it only ever has 4 values. These are documented in
 // `compiler/rustc_session/src/config/sigpipe.rs`.
 #[cfg_attr(test, allow(dead_code))]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 unsafe fn init(argc: isize, argv: *const *const u8, sigpipe: u8) {
     #[cfg_attr(target_os = "teeos", allow(unused_unsafe))]
     unsafe {
@@ -131,7 +131,7 @@ unsafe fn init(argc: isize, argv: *const *const u8, sigpipe: u8) {
 /// code managed by the Rust runtime, but will not cause UB if that condition is
 /// not fulfilled. Also note that this function is not guaranteed to be run, but
 /// skipping it will cause leaks and therefore is to be avoided.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub(crate) fn thread_cleanup() {
     // This function is run in situations where unwinding leads to an abort
     // (think `extern "C"` functions). Abort here instead so that we can
@@ -145,7 +145,7 @@ pub(crate) fn thread_cleanup() {
 // One-time runtime cleanup.
 // Runs after `main` or at program exit.
 // NOTE: this is not guaranteed to run, for example when the program aborts.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub(crate) fn cleanup() {
     static CLEANUP: Once = Once::new();
     CLEANUP.call_once(|| unsafe {
@@ -159,7 +159,7 @@ pub(crate) fn cleanup() {
 // To reduce the generated code of the new `lang_start`, this function is doing
 // the real work.
 #[cfg(not(test))]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn lang_start_internal(
     main: &(dyn Fn() -> i32 + Sync + crate::panic::RefUnwindSafe),
     argc: isize,
@@ -207,7 +207,7 @@ fn lang_start_internal(
 
 #[cfg(not(test))]
 #[inline(never)]
-#[cfg(not(any(test, doctest, target_family = "solana")))]
+#[cfg(not(any(test, doctest, target_family = "tos")))]
 #[lang = "start"]
 fn lang_start<T: crate::process::Termination + 'static>(
     main: fn() -> T,
@@ -224,7 +224,7 @@ fn lang_start<T: crate::process::Termination + 'static>(
 }
 
 #[cfg(not(test))]
-#[cfg(target_family = "solana")]
+#[cfg(target_family = "tos")]
 #[lang = "start"]
 fn lang_start<T: crate::process::Termination + 'static>(
     main: fn() -> T,

@@ -21,7 +21,7 @@ extern crate panic_handler;
     not(thumb),
     not(windows),
     not(target_arch = "wasm32"),
-    not(target_os = "solana")
+    not(target_os = "tos")
 ))]
 #[link(name = "c")]
 unsafe extern "C" {}

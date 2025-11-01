@@ -3,7 +3,7 @@
 use super::select::Selected;
 use super::waker::current_thread_id;
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::cell::Cell;
 use crate::ptr;
 use crate::sync::Arc;
@@ -35,7 +35,7 @@ struct Inner {
 
 impl Context {
     /// Creates a new context for the duration of the closure.
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     #[inline]
     pub fn with<F, R>(f: F) -> R
     where
@@ -65,7 +65,7 @@ impl Context {
             .unwrap_or_else(|_| f(&Context::new()))
     }
 
-    #[cfg(target_family = "solana")]
+    #[cfg(target_family = "tos")]
     #[inline]
     pub fn with<F, R>(f: F) -> R
     where
@@ -88,7 +88,7 @@ impl Context {
     }
 
     /// Resets `select` and `packet`.
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     #[inline]
     fn reset(&self) {
         self.inner.select.store(Selected::Waiting.into(), Ordering::Release);

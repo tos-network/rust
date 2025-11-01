@@ -23,8 +23,8 @@ fn once_cell_get_mut() {
     assert_eq!(c.get_mut(), Some(&mut 92));
 }
 
-// sbf doesn't have mutable static data
-#[cfg(not(target_family = "solana"))]
+// tbf doesn't have mutable static data
+#[cfg(not(target_family = "tos"))]
 #[test]
 fn once_cell_drop() {
     static DROP_CNT: AtomicUsize = AtomicUsize::new(0);

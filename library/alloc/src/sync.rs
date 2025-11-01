@@ -2676,8 +2676,8 @@ unsafe impl<#[may_dangle] T: ?Sized, A: Allocator> Drop for Arc<T, A> {
 
         // Make sure we aren't trying to "drop" the shared static for empty slices
         // used by Default::default.
-        #[cfg(not(target_family = "solana"))]
-        // This debug assert does not work on Solana, since it requires a writable data section,
+        #[cfg(not(target_family = "tos"))]
+        // This debug assert does not work on Tos, since it requires a writable data section,
         // which the ELF loader will reject.
         {
             debug_assert!(
@@ -3319,8 +3319,8 @@ unsafe impl<#[may_dangle] T: ?Sized, A: Allocator> Drop for Weak<T, A> {
 
             // Make sure we aren't trying to "deallocate" the shared static for empty slices
             // used by Default::default.
-            #[cfg(not(target_family = "solana"))]
-            // This debug assert does not work on Solana, since it requires a writable data section,
+            #[cfg(not(target_family = "tos"))]
+            // This debug assert does not work on Tos, since it requires a writable data section,
             // which the ELF loader will reject.
             {
                 debug_assert!(

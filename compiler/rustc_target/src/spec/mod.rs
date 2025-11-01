@@ -2046,13 +2046,13 @@ supported_targets! {
 
     ("bpfeb-unknown-none", bpfeb_unknown_none),
     ("bpfel-unknown-none", bpfel_unknown_none),
-    ("sbf-solana-solana", sbf_solana_solana),
-    ("sbpf-solana-solana", sbpf_solana_solana),
-    ("sbpfv0-solana-solana", sbpfv0_solana_solana),
-    ("sbpfv1-solana-solana", sbpfv1_solana_solana),
-    ("sbpfv2-solana-solana", sbpfv2_solana_solana),
-    ("sbpfv3-solana-solana", sbpfv3_solana_solana),
-    ("sbpfv4-solana-solana", sbpfv4_solana_solana),
+    ("tbf-tos-tos", tbf_tos_tos),
+    ("tbpf-tos-tos", tbpf_tos_tos),
+    ("tbpfv0-tos-tos", tbpfv0_tos_tos),
+    ("tbpfv1-tos-tos", tbpfv1_tos_tos),
+    ("tbpfv2-tos-tos", tbpfv2_tos_tos),
+    ("tbpfv3-tos-tos", tbpfv3_tos_tos),
+    ("tbpfv4-tos-tos", tbpfv4_tos_tos),
 
 
     ("armv6k-nintendo-3ds", armv6k_nintendo_3ds),
@@ -3501,7 +3501,7 @@ impl Target {
             "loongarch64" => (Architecture::LoongArch64, None),
             "csky" => (Architecture::Csky, None),
             "arm64ec" => (Architecture::Aarch64, Some(object::SubArchitecture::Arm64EC)),
-            "sbf" => (Architecture::Sbf, None),
+            "tbf" => (Architecture::Bpf, None),
             // Unsupported architecture.
             _ => return None,
         })

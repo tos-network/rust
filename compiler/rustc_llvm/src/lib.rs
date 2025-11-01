@@ -249,11 +249,11 @@ pub fn initialize_available_targets() {
         LLVMInitializeBPFAsmParser
     );
     init_target!(
-        llvm_component = "sbf",
-        LLVMInitializeSBFTargetInfo,
-        LLVMInitializeSBFTarget,
-        LLVMInitializeSBFTargetMC,
-        LLVMInitializeSBFAsmPrinter,
-        LLVMInitializeSBFAsmParser
+        llvm_component = "tbf",
+        LLVMInitializeTBFTargetInfo,
+        LLVMInitializeTBFTarget,
+        LLVMInitializeTBFTargetMC,
+        LLVMInitializeTBFAsmPrinter,
+        LLVMInitializeTBFAsmParser
     );
 }

@@ -28,7 +28,7 @@ std_detect = { path = "../stdarch/crates/std_detect", default-features = false, 
 ] }
 
 # Dependencies of the `backtrace` crate
-[target.'cfg(not(target_family = "solana"))'.dependencies]
+[target.'cfg(not(target_family = "tos"))'.dependencies]
 addr2line = { version = "0.25.0", optional = true, default-features = false }
 rustc-demangle = { version = "0.1.24", features = ['rustc-dep-of-std'] }
 
@@ -171,7 +171,7 @@ check-cfg = [
     'cfg(target_has_reliable_f16_math)',
     'cfg(target_has_reliable_f128)',
     'cfg(target_has_reliable_f128_math)',
-    'cfg(target_family, values("solana"))',
-    'cfg(target_os, values("solana"))',
-    'cfg(target_arch, values("sbf"))',
+    'cfg(target_family, values("tos"))',
+    'cfg(target_os, values("tos"))',
+    'cfg(target_arch, values("tbf"))',
 ]

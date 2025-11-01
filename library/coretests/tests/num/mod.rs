@@ -25,8 +25,8 @@ mod bignum;
 mod const_from;
 mod dec2flt;
 mod float_iter_sum_identity;
-// sbf doesn't support floats
-#[cfg(not(target_family = "solana"))]
+// tbf doesn't support floats
+#[cfg(not(target_family = "tos"))]
 mod flt2dec;
 mod ieee754;
 mod int_log;

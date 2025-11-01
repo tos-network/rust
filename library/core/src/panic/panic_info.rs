@@ -30,7 +30,7 @@ pub struct PanicMessage<'a> {
 }
 
 impl<'a> PanicInfo<'a> {
-    /// Create a new PanicInfo (for Solana only)
+    /// Create a new PanicInfo (for Tos only)
     /// This is going to be removed in a future refactor.
     #[inline]
     #[stable(feature = "panic_hooks", since = "1.10.0")]

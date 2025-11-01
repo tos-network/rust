@@ -2,9 +2,9 @@
 //! thread locals and we can instead just use plain statics!
 
 use crate::cell::UnsafeCell;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::cell::Cell;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::ptr;
 
 #[doc(hidden)]
@@ -98,7 +98,7 @@ impl<T> LazyStorage<T> {
 unsafe impl<T> Sync for LazyStorage<T> {}
 
 #[rustc_macro_transparency = "semitransparent"]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub(crate) macro local_pointer {
     () => {},
     ($vis:vis static $name:ident; $($rest:tt)*) => {
@@ -107,12 +107,12 @@ pub(crate) macro local_pointer {
     },
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub(crate) struct LocalPointer {
     p: Cell<*mut ()>,
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl LocalPointer {
     pub const fn __new() -> LocalPointer {
         LocalPointer { p: Cell::new(ptr::null_mut()) }
@@ -128,5 +128,5 @@ impl LocalPointer {
 }
 
 // SAFETY: the target doesn't have threads.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 unsafe impl Sync for LocalPointer {}

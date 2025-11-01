@@ -2430,7 +2430,7 @@ impl Child {
 #[stable(feature = "rust1", since = "1.0.0")]
 #[cfg_attr(not(test), rustc_diagnostic_item = "process_exit")]
 pub fn exit(code: i32) -> ! {
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     crate::rt::cleanup();
     crate::sys::os::exit(code)
 }
@@ -2577,12 +2577,12 @@ impl<T: Termination, E: fmt::Debug> Termination for Result<T, E> {
     fn report(self) -> ExitCode {
         match self {
             Ok(val) => val.report(),
-            #[cfg(not(target_family = "solana"))]
+            #[cfg(not(target_family = "tos"))]
             Err(err) => {
                 io::attempt_print_to_stderr(format_args_nl!("Error: {err:?}"));
                 ExitCode::FAILURE
             }
-            #[cfg(target_family = "solana")]
+            #[cfg(target_family = "tos")]
             Err(_err) => {
                 ExitCode::FAILURE
             }

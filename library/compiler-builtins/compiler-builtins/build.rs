@@ -52,7 +52,7 @@ fn main() {
         || target.arch.contains("x86")
         || target.arch.contains("aarch64")
         || target.arch.contains("bpf")
-        || target.arch.contains("sbf")
+        || target.arch.contains("tbf")
     {
         println!("cargo:rustc-cfg=feature=\"mem-unaligned\"");
     }
@@ -610,7 +610,7 @@ mod c {
             sources.extend(&[("__emutls_get_address", "emutls.c")]);
         }
 
-        if target.os == "solana" {
+        if target.os == "tos" {
             cfg.define("__ELF__", None);
         }
 

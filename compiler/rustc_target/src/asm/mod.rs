@@ -276,7 +276,7 @@ impl FromStr for InlineAsmArch {
             "m68k" => Ok(Self::M68k),
             "csky" => Ok(Self::CSKY),
             "bpf" => Ok(Self::Bpf),
-            "sbf" => Ok(Self::Bpf),
+            "tbf" => Ok(Self::Bpf),
             _ => Err(()),
         }
     }

@@ -6,7 +6,7 @@ pub use core::error::Error;
 #[unstable(feature = "error_generic_member_access", issue = "99301")]
 pub use core::error::{Request, request_ref, request_value};
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::backtrace::Backtrace;
 use crate::fmt::{self, Write};
 
@@ -447,7 +447,7 @@ impl<E> Report<E>
 where
     E: Error,
 {
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     fn backtrace(&self) -> Option<&Backtrace> {
         // have to grab the backtrace on the first error directly since that error may not be
         // 'static
@@ -498,7 +498,7 @@ where
             }
         }
 
-        #[cfg(not(target_family = "solana"))]
+        #[cfg(not(target_family = "tos"))]
         if self.show_backtrace {
             if let Some(backtrace) = self.backtrace() {
                 write!(f, "\n\nStack backtrace:\n{}", backtrace.to_string().trim_end())?;

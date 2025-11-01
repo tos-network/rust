@@ -715,27 +715,27 @@
     [xtensa_esp32s3_espidf] compile-flags: --target xtensa-esp32s3-espidf
     [xtensa_esp32s3_espidf] needs-llvm-components: xtensa
 */
-//@ revisions: sbf_solana_solana
-//@ [sbf_solana_solana] compile-flags: --target sbf-solana-solana
-//@ [sbf_solana_solana] needs-llvm-components: sbf
-//@ revisions: sbpf_solana_solana
-//@ [sbpf_solana_solana] compile-flags: --target sbpf-solana-solana
-//@ [sbpf_solana_solana] needs-llvm-components: sbf
-//@ revisions: sbpfv0_solana_solana
-//@ [sbpfv0_solana_solana] compile-flags: --target sbpfv0-solana-solana
-//@ [sbpfv0_solana_solana] needs-llvm-components: sbf
-//@ revisions: sbpfv1_solana_solana
-//@ [sbpfv1_solana_solana] compile-flags: --target sbpfv1-solana-solana
-//@ [sbpfv1_solana_solana] needs-llvm-components: sbf
-//@ revisions: sbpfv2_solana_solana
-//@ [sbpfv2_solana_solana] compile-flags: --target sbpfv2-solana-solana
-//@ [sbpfv2_solana_solana] needs-llvm-components: sbf
-//@ revisions: sbpfv3_solana_solana
-//@ [sbpfv3_solana_solana] compile-flags: --target sbpfv3-solana-solana
-//@ [sbpfv3_solana_solana] needs-llvm-components: sbf
-//@ revisions: sbpfv4_solana_solana
-//@ [sbpfv4_solana_solana] compile-flags: --target sbpfv4-solana-solana
-//@ [sbpfv4_solana_solana] needs-llvm-components: sbf
+//@ revisions: tbf_tos_tos
+//@ [tbf_tos_tos] compile-flags: --target tbf-tos-tos
+//@ [tbf_tos_tos] needs-llvm-components: tbf
+//@ revisions: tbpf_tos_tos
+//@ [tbpf_tos_tos] compile-flags: --target tbpf-tos-tos
+//@ [tbpf_tos_tos] needs-llvm-components: tbf
+//@ revisions: tbpfv0_tos_tos
+//@ [tbpfv0_tos_tos] compile-flags: --target tbpfv0-tos-tos
+//@ [tbpfv0_tos_tos] needs-llvm-components: tbf
+//@ revisions: tbpfv1_tos_tos
+//@ [tbpfv1_tos_tos] compile-flags: --target tbpfv1-tos-tos
+//@ [tbpfv1_tos_tos] needs-llvm-components: tbf
+//@ revisions: tbpfv2_tos_tos
+//@ [tbpfv2_tos_tos] compile-flags: --target tbpfv2-tos-tos
+//@ [tbpfv2_tos_tos] needs-llvm-components: tbf
+//@ revisions: tbpfv3_tos_tos
+//@ [tbpfv3_tos_tos] compile-flags: --target tbpfv3-tos-tos
+//@ [tbpfv3_tos_tos] needs-llvm-components: tbf
+//@ revisions: tbpfv4_tos_tos
+//@ [tbpfv4_tos_tos] compile-flags: --target tbpfv4-tos-tos
+//@ [tbpfv4_tos_tos] needs-llvm-components: tbf
 
 // Sanity-check that each target can produce assembly code.
 

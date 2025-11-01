@@ -27,7 +27,7 @@ const MIN_ALIGN: usize = if cfg!(any(
     target_arch = "hexagon",
     target_arch = "riscv32",
     target_arch = "xtensa",
-    target_arch = "sbf",
+    target_arch = "tbf",
 )) {
     8
 } else if cfg!(any(

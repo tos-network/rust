@@ -314,7 +314,7 @@ pub use self::error::const_error;
 pub use self::pipe::{PipeReader, PipeWriter, pipe};
 #[stable(feature = "is_terminal", since = "1.70.0")]
 pub use self::stdio::IsTerminal;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub(crate) use self::stdio::attempt_print_to_stderr;
 #[unstable(feature = "print_internals", issue = "none")]
 #[doc(hidden)]
@@ -331,7 +331,7 @@ pub use self::{
     stdio::{Stderr, Stdin, Stdout, stderr, stdin, stdout},
     util::{Empty, Repeat, Sink, empty, repeat, sink},
 };
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 #[stable(feature = "rust1", since = "1.0.0")]
 pub use self::stdio::{StderrLock, StdinLock, StdoutLock};
 use crate::mem::take;
@@ -350,7 +350,7 @@ mod util;
 
 const DEFAULT_BUF_SIZE: usize = crate::sys::io::DEFAULT_BUF_SIZE;
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub(crate) use stdio::cleanup;
 
 struct Guard<'a> {

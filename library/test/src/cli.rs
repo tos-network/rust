@@ -1,8 +1,8 @@
 //! Module converting command-line arguments into test configuration.
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use std::env;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use std::io::{self, IsTerminal, Write};
 use std::path::PathBuf;
 
@@ -36,7 +36,7 @@ pub struct TestOpts {
 }
 
 impl TestOpts {
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     pub fn use_color(&self) -> bool {
         match self.color {
             ColorConfig::AutoColor => !self.nocapture && io::stdout().is_terminal(),
@@ -45,7 +45,7 @@ impl TestOpts {
         }
     }
 
-    #[cfg(target_family = "solana")]
+    #[cfg(target_family = "tos")]
     pub fn use_color(&self) -> bool {
         false
     }
@@ -54,7 +54,7 @@ impl TestOpts {
 /// Result of parsing the options.
 pub(crate) type OptRes = Result<TestOpts, String>;
 /// Result of parsing the option part.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 type OptPartRes<T> = Result<T, String>;
 
 fn optgroups() -> getopts::Options {
@@ -161,7 +161,7 @@ fn optgroups() -> getopts::Options {
     opts
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn usage(binary: &str, options: &getopts::Options) {
     let message = format!("Usage: {binary} [OPTIONS] [FILTERS...]");
     println!(
@@ -213,7 +213,7 @@ pub fn parse_opts(args: &[String]) -> Option<OptRes> {
     // Flags hidden from `usage`
     opts.optflag("", "nocapture", "Deprecated, use `--no-capture`");
 
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     let binary = args.first().map(|c| &**c).unwrap_or("...");
     let args = args.get(1..).unwrap_or(args);
     let matches = match opts.parse(args) {
@@ -222,7 +222,7 @@ pub fn parse_opts(args: &[String]) -> Option<OptRes> {
     };
 
     // Check if help was requested.
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     if matches.opt_present("h") {
         // Show help and do nothing more.
         usage(binary, &optgroups());
@@ -236,7 +236,7 @@ pub fn parse_opts(args: &[String]) -> Option<OptRes> {
 }
 
 // Gets the option value and checks if unstable features are enabled.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 macro_rules! unstable_optflag {
     ($matches:ident, $allow_unstable:ident, $option_name:literal) => {{
         let opt = $matches.opt_present($option_name);
@@ -252,7 +252,7 @@ macro_rules! unstable_optflag {
 }
 
 // Gets the option value and checks if unstable features are enabled.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 macro_rules! unstable_optopt {
     ($matches:ident, $allow_unstable:ident, $option_name:literal) => {{
         let opt = $matches.opt_str($option_name);
@@ -269,7 +269,7 @@ macro_rules! unstable_optopt {
 
 // Implementation of `parse_opts` that doesn't care about help message
 // and returns a `Result`.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn parse_opts_impl(matches: getopts::Matches) -> OptRes {
     let allow_unstable = get_allow_unstable(&matches)?;
 
@@ -328,7 +328,7 @@ fn parse_opts_impl(matches: getopts::Matches) -> OptRes {
     Ok(test_opts)
 }
 
-#[cfg(target_family = "solana")]
+#[cfg(target_family = "tos")]
 fn parse_opts_impl(_matches: getopts::Matches) -> OptRes {
     let test_opts = TestOpts {
         list: false,
@@ -356,7 +356,7 @@ fn parse_opts_impl(_matches: getopts::Matches) -> OptRes {
 }
 
 // FIXME: Copied from librustc_ast until linkage errors are resolved. Issue #47566
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn is_nightly() -> bool {
     // Whether this is a feature-staged build, i.e., on the beta or stable channel
     let disable_unstable_features =
@@ -368,7 +368,7 @@ fn is_nightly() -> bool {
 }
 
 // Gets the CLI options associated with `report-time` feature.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn get_time_options(
     matches: &getopts::Matches,
     allow_unstable: bool,
@@ -387,7 +387,7 @@ fn get_time_options(
     Ok(options)
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn get_shuffle(matches: &getopts::Matches, allow_unstable: bool) -> OptPartRes<bool> {
     let mut shuffle = unstable_optflag!(matches, allow_unstable, "shuffle");
     if !shuffle && allow_unstable {
@@ -400,7 +400,7 @@ fn get_shuffle(matches: &getopts::Matches, allow_unstable: bool) -> OptPartRes<b
     Ok(shuffle)
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn get_shuffle_seed(matches: &getopts::Matches, allow_unstable: bool) -> OptPartRes<Option<u64>> {
     let mut shuffle_seed = match unstable_optopt!(matches, allow_unstable, "shuffle-seed") {
         Some(n_str) => match n_str.parse::<u64>() {
@@ -428,7 +428,7 @@ fn get_shuffle_seed(matches: &getopts::Matches, allow_unstable: bool) -> OptPart
     Ok(shuffle_seed)
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn get_test_threads(matches: &getopts::Matches) -> OptPartRes<Option<usize>> {
     let test_threads = match matches.opt_str("test-threads") {
         Some(n_str) => match n_str.parse::<usize>() {
@@ -447,7 +447,7 @@ fn get_test_threads(matches: &getopts::Matches) -> OptPartRes<Option<usize>> {
     Ok(test_threads)
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn get_format(
     matches: &getopts::Matches,
     quiet: bool,
@@ -480,7 +480,7 @@ fn get_format(
     Ok(format)
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn get_color_config(matches: &getopts::Matches) -> OptPartRes<ColorConfig> {
     let color = match matches.opt_str("color").as_deref() {
         Some("auto") | None => ColorConfig::AutoColor,
@@ -498,7 +498,7 @@ fn get_color_config(matches: &getopts::Matches) -> OptPartRes<ColorConfig> {
     Ok(color)
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn get_nocapture(matches: &getopts::Matches) -> OptPartRes<bool> {
     let mut nocapture = matches.opt_present("nocapture") || matches.opt_present("no-capture");
     if !nocapture {
@@ -511,7 +511,7 @@ fn get_nocapture(matches: &getopts::Matches) -> OptPartRes<bool> {
     Ok(nocapture)
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn get_run_ignored(matches: &getopts::Matches, include_ignored: bool) -> OptPartRes<RunIgnored> {
     let run_ignored = match (include_ignored, matches.opt_present("ignored")) {
         (true, true) => {
@@ -525,7 +525,7 @@ fn get_run_ignored(matches: &getopts::Matches, include_ignored: bool) -> OptPart
     Ok(run_ignored)
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn get_allow_unstable(matches: &getopts::Matches) -> OptPartRes<bool> {
     let mut allow_unstable = false;
 
@@ -547,7 +547,7 @@ fn get_allow_unstable(matches: &getopts::Matches) -> OptPartRes<bool> {
     Ok(allow_unstable)
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn get_log_file(matches: &getopts::Matches) -> OptPartRes<Option<PathBuf>> {
     let logfile = matches.opt_str("logfile").map(|s| PathBuf::from(&s));
 

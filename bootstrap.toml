@@ -69,7 +69,7 @@ targets = "AArch64;X86"
 # not built by default and the experimental Rust compilation targets that depend
 # on them will not work unless the user opts in to building them. By default the
 # `WebAssembly`, `RISCV`, and `BPF` targets are enabled when compiling LLVM from scratch.
-experimental-targets = "BPF;SBF"
+experimental-targets = "BPF"
 
 # Cap the number of parallel linker invocations when compiling LLVM.
 # This can be useful when building LLVM with debug info, which significantly
@@ -235,7 +235,7 @@ docs = false
 [install]
 
 # Instead of installing to /usr/local, install to this path instead.
-prefix = "opt/sbf-rust"
+prefix = "opt/tbf-rust"
 
 # Where to install system configuration files
 # If this is a relative path, it will get installed in `prefix` above

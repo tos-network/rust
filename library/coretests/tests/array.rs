@@ -1,4 +1,4 @@
-#![cfg(all(not(target_arch = "bpf"), not(target_arch = "sbf")))]
+#![cfg(all(not(target_arch = "bpf"), not(target_arch = "tbf")))]
 
 use core::num::NonZero;
 use core::sync::atomic::{AtomicUsize, Ordering};
@@ -514,7 +514,7 @@ fn array_rsplit_array_mut_out_of_bounds() {
 }
 
 #[test]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn array_intoiter_advance_by() {
     use std::cell::Cell;
     struct DropCounter<'a>(usize, &'a Cell<usize>);
@@ -568,7 +568,7 @@ fn array_intoiter_advance_by() {
 }
 
 #[test]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn array_intoiter_advance_back_by() {
     use std::cell::Cell;
     struct DropCounter<'a>(usize, &'a Cell<usize>);

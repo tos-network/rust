@@ -210,13 +210,13 @@ fn default_compiler(
             }
         }
 
-        "sbf-solana-solana"
-        | "sbpf-solana-solana"
-        | "sbpfv0-solana-solana"
-        | "sbpfv1-solana-solana"
-        | "sbpfv2-solana-solana"
-        | "sbpfv3-solana-solana"
-        | "sbpfv4-solana-solana" => {
+        "tbf-tos-tos"
+        | "tbpf-tos-tos"
+        | "tbpfv0-tos-tos"
+        | "tbpfv1-tos-tos"
+        | "tbpfv2-tos-tos"
+        | "tbpfv3-tos-tos"
+        | "tbpfv4-tos-tos" => {
             Some(build.llvm_bin(target).join(compiler.clang()))
         }
 

@@ -6,7 +6,7 @@ use crate::ops::Deref;
 use crate::panic::{RefUnwindSafe, UnwindSafe};
 use crate::sys::sync as sys;
 use crate::thread::ThreadId;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::thread::current_id;
 
 /// A re-entrant mutual exclusion lock
@@ -91,19 +91,19 @@ pub struct ReentrantLock<T: ?Sized> {
 
 cfg_if!(
     if #[cfg(target_has_atomic = "64")] {
-        #[cfg(not(target_family = "solana"))]
+        #[cfg(not(target_family = "tos"))]
         use crate::sync::atomic::AtomicU64;
         use crate::sync::atomic::{Atomic, Ordering::Relaxed};
 
         struct Tid(Atomic<u64>);
 
         impl Tid {
-            #[cfg(not(target_family = "solana"))]
+            #[cfg(not(target_family = "tos"))]
             const fn new() -> Self {
                 Self(AtomicU64::new(0))
             }
 
-            #[cfg(not(target_family = "solana"))]
+            #[cfg(not(target_family = "tos"))]
             #[inline]
             fn contains(&self, owner: ThreadId) -> bool {
                 owner.as_u64().get() == self.0.load(Relaxed)
@@ -236,7 +236,7 @@ impl<T> ReentrantLock<T> {
     ///
     /// let lock = ReentrantLock::new(0);
     /// ```
-    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "sbf")))]
+    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "tbf")))]
     pub const fn new(t: T) -> ReentrantLock<T> {
         ReentrantLock {
             mutex: sys::Mutex::new(),
@@ -258,7 +258,7 @@ impl<T> ReentrantLock<T> {
     /// let lock = ReentrantLock::new(0);
     /// assert_eq!(lock.into_inner(), 0);
     /// ```
-    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "sbf")))]
+    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "tbf")))]
     pub fn into_inner(self) -> T {
         self.data
     }
@@ -290,7 +290,7 @@ impl<T: ?Sized> ReentrantLock<T> {
     /// }).join().expect("thread::spawn failed");
     /// assert_eq!(lock.lock().get(), 10);
     /// ```
-    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "sbf")))]
+    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "tbf")))]
     pub fn lock(&self) -> ReentrantLockGuard<'_, T> {
         let this_thread = current_id();
         // Safety: We only touch lock_count when we own the inner mutex.
@@ -325,7 +325,7 @@ impl<T: ?Sized> ReentrantLock<T> {
     /// *lock.get_mut() = 10;
     /// assert_eq!(*lock.lock(), 10);
     /// ```
-    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "sbf")))]
+    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "tbf")))]
     pub fn get_mut(&mut self) -> &mut T {
         &mut self.data
     }
@@ -337,7 +337,7 @@ impl<T: ?Sized> ReentrantLock<T> {
     ///
     /// This function does not block.
     // FIXME maybe make it a public part of the API?
-    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "sbf")))]
+    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "tbf")))]
     #[unstable(issue = "none", feature = "std_internals")]
     #[doc(hidden)]
     pub fn try_lock(&self) -> Option<ReentrantLockGuard<'_, T>> {
@@ -371,7 +371,7 @@ impl<T: ?Sized> ReentrantLock<T> {
         &raw const self.data
     }
 
-    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "sbf")))]
+    #[cfg(all(not(target_arch = "bpf"), not(target_arch = "tbf")))]
     unsafe fn increment_lock_count(&self) -> Option<()> {
         unsafe {
             *self.lock_count.get() = (*self.lock_count.get()).checked_add(1)?;
@@ -384,7 +384,7 @@ impl<T: ?Sized> ReentrantLock<T> {
 impl<T: fmt::Debug + ?Sized> fmt::Debug for ReentrantLock<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut d = f.debug_struct("ReentrantLock");
-        #[cfg(not(target_family = "solana"))]
+        #[cfg(not(target_family = "tos"))]
         match self.try_lock() {
             Some(v) => d.field("data", &&*v),
             None => d.field("data", &format_args!("<locked>")),
@@ -394,7 +394,7 @@ impl<T: fmt::Debug + ?Sized> fmt::Debug for ReentrantLock<T> {
 }
 
 #[unstable(feature = "reentrant_lock", issue = "121440")]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl<T: Default> Default for ReentrantLock<T> {
     fn default() -> Self {
         Self::new(T::default())
@@ -402,7 +402,7 @@ impl<T: Default> Default for ReentrantLock<T> {
 }
 
 #[unstable(feature = "reentrant_lock", issue = "121440")]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl<T> From<T> for ReentrantLock<T> {
     fn from(t: T) -> Self {
         Self::new(t)

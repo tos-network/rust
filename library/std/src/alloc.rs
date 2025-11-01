@@ -57,9 +57,9 @@
 #![stable(feature = "alloc_module", since = "1.28.0")]
 
 use core::ptr::NonNull;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use core::sync::atomic::{Atomic, AtomicPtr, Ordering};
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use core::mem;
 use core::{hint, ptr};
 
@@ -290,7 +290,7 @@ unsafe impl Allocator for System {
     }
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 static HOOK: Atomic<*mut ()> = AtomicPtr::new(ptr::null_mut());
 
 /// Registers a custom allocation error hook, replacing any that was previously registered.
@@ -333,7 +333,7 @@ static HOOK: Atomic<*mut ()> = AtomicPtr::new(ptr::null_mut());
 /// set_alloc_error_hook(custom_alloc_error_hook);
 /// ```
 #[unstable(feature = "alloc_error_hook", issue = "51245")]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub fn set_alloc_error_hook(hook: fn(Layout)) {
     HOOK.store(hook as *mut (), Ordering::Release);
 }
@@ -344,13 +344,13 @@ pub fn set_alloc_error_hook(hook: fn(Layout)) {
 ///
 /// If no custom hook is registered, the default hook will be returned.
 #[unstable(feature = "alloc_error_hook", issue = "51245")]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub fn take_alloc_error_hook() -> fn(Layout) {
     let hook = HOOK.swap(ptr::null_mut(), Ordering::Acquire);
     if hook.is_null() { default_alloc_error_hook } else { unsafe { mem::transmute(hook) } }
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 fn default_alloc_error_hook(layout: Layout) {
     unsafe extern "Rust" {
         // This symbol is emitted by rustc next to __rust_alloc_error_handler.
@@ -377,14 +377,14 @@ fn default_alloc_error_hook(layout: Layout) {
 #[alloc_error_handler]
 #[unstable(feature = "alloc_internals", issue = "none")]
 pub fn rust_oom(_layout: Layout) -> ! {
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     {
         let hook = HOOK.load(Ordering::SeqCst);
         let hook: fn(Layout) =
             if hook.is_null() { default_alloc_error_hook } else { unsafe { mem::transmute(hook) } };
         hook(_layout);
     }
-    #[cfg(target_family = "solana")]
+    #[cfg(target_family = "tos")]
     {
         crate::sys::sol_log(b"Error: memory allocation failed, out of memory");
     }

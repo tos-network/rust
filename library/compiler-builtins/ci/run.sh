@@ -30,9 +30,9 @@ if [ "${BUILD_ONLY:-}" = "1" ]; then
     echo "no tests to run for build-only targets"
 else
     test_builtins=(cargo test --package builtins-test --no-fail-fast --target "$target")
-    if [[ ! "$target" =~ ^sbf && ! "$target" =~ ^sbpf- ]]; then
-      # Not using release mode causes a stack overflow in SBPFv0
-      # There is a bug in SBPFv3 whereby we were not adding returns to -O0 code
+    if [[ ! "$target" =~ ^sbf && ! "$target" =~ ^tbpf- ]]; then
+      # Not using release mode causes a stack overflow in TBPFv0
+      # There is a bug in TBPFv3 whereby we were not adding returns to -O0 code
       "${test_builtins[@]}"
       "${test_builtins[@]}" --features c
       "${test_builtins[@]}" --features no-asm
@@ -44,8 +44,8 @@ else
     "${test_builtins[@]}" --features no-asm --release
     "${test_builtins[@]}" --features no-f16-f128 --release
 
-   if [[ ! "$target" =~ ^sbf && ! "$target" =~ ^sbpf ]]; then
-      # Benches require criterion, which is not compatible with SBPF
+   if [[ ! "$target" =~ ^sbf && ! "$target" =~ ^tbpf ]]; then
+      # Benches require criterion, which is not compatible with TBPF
       "${test_builtins[@]}" --benches
       "${test_builtins[@]}" --benches --release
       "${test_builtins[@]}" --benches

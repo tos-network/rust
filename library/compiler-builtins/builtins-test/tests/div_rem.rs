@@ -140,7 +140,7 @@ macro_rules! float {
 
 #[cfg(not(any(
     all(target_arch = "x86", not(target_feature = "sse")),
-    target_family = "solana"
+    target_family = "tos"
 )))]
 mod float_div {
     use super::*;

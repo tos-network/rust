@@ -467,7 +467,7 @@ impl<'a> GccLinker<'a> {
                 }
             }
 
-            if self.sess.target.arch == "bpf" || self.sess.target.arch == "sbf" {
+            if self.sess.target.arch == "bpf" || self.sess.target.arch == "tbf" {
                 if self.sess.opts.test {
                     self.link_arg("--entry=main");
                 } else {

@@ -104,7 +104,7 @@ const KNOWN_OS: [&str; 21] = [
     "psp",
     "redox",
     "solaris",
-    "solana",
+    "tos",
     "uefi",
     "unknown",
     "vxworks",

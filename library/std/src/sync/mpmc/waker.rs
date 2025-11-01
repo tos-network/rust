@@ -200,7 +200,7 @@ impl Drop for SyncWaker {
 }
 
 /// Returns a unique id for the current thread.
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 #[inline]
 pub fn current_thread_id() -> usize {
     // `u8` is not drop so this variable will be available during thread destruction,
@@ -210,7 +210,7 @@ pub fn current_thread_id() -> usize {
 }
 
 /// Returns a unique id for the current thread.
-#[cfg(target_family = "solana")]
+#[cfg(target_family = "tos")]
 #[inline]
 pub fn current_thread_id() -> usize {
     0

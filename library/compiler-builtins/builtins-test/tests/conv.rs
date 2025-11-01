@@ -85,7 +85,7 @@ mod i_to_f {
                             target_arch = "x86",
                             target_arch = "powerpc",
                             target_arch = "powerpc64",
-                            // In SBF, the rounding bug exists when ALU32 is disbaled.
+                            // In TBF, the rounding bug exists when ALU32 is disbaled.
                             not(target_feature = "static-syscalls"),
                         )) {
                             panic!(

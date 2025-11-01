@@ -162,30 +162,30 @@ pr:
   - name: x86_64-gnu-miri
     <<: *job-linux-4c
 
-  - name: sbf-solana-solana
+  - name: sbf-tos-tos
     continue_on_error: true
     env:
-      IMAGE: sbf-solana-solana
+      IMAGE: sbf-tos-tos
     <<: *job-linux-4c
-  - name: sbpf-solana-solana
+  - name: tbpf-tos-tos
     continue_on_error: true
     env:
-      IMAGE: sbpf-solana-solana
+      IMAGE: tbpf-tos-tos
     <<: *job-linux-4c
-  - name: sbpfv1-solana-solana
+  - name: tbpfv1-tos-tos
     continue_on_error: true
     env:
-      IMAGE: sbpfv1-solana-solana
+      IMAGE: tbpfv1-tos-tos
     <<: *job-linux-4c
-  - name: sbpfv2-solana-solana
+  - name: tbpfv2-tos-tos
     continue_on_error: true
     env:
-      IMAGE: sbpfv2-solana-solana
+      IMAGE: tbpfv2-tos-tos
     <<: *job-linux-4c
-  - name: sbpfv3-solana-solana
+  - name: tbpfv3-tos-tos
     continue_on_error: true
     env:
-      IMAGE: sbpfv3-solana-solana
+      IMAGE: tbpfv3-tos-tos
     <<: *job-linux-4c
 
 # Jobs that run when you perform a try build (@bors try)

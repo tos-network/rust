@@ -212,8 +212,8 @@ fn ptr_bitops_tagging() {
     assert_eq!(atom.load(SeqCst), ptr);
 }
 
-// SBF does not support mustable static data
-#[cfg(not(target_family = "solana"))]
+// TBF does not support mustable static data
+#[cfg(not(target_family = "tos"))]
 mod statik {
     use super::*;
 

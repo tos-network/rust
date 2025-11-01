@@ -548,7 +548,7 @@ mod imp {
     );
 }
 
-#[cfg(not(any(target_pointer_width = "64", target_arch = "wasm32", target_family = "solana")))]
+#[cfg(not(any(target_pointer_width = "64", target_arch = "wasm32", target_family = "tos")))]
 mod imp {
     use super::*;
     impl_Display!(

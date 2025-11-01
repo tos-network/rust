@@ -20,7 +20,7 @@ on:
       - try-perf
       - automation/bors/try
       - master
-      - solana-**
+      - tos-**
   pull_request:
     branches:
       - "**"

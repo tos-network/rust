@@ -4,7 +4,7 @@
 #![feature(asm_experimental_arch)]
 #![feature(cfg_target_has_atomic)]
 #![feature(compiler_builtins)]
-#![cfg_attr(not(target_os = "solana"), feature(core_ffi_c))]
+#![cfg_attr(not(target_os = "tos"), feature(core_ffi_c))]
 #![feature(core_intrinsics)]
 #![feature(linkage)]
 #![feature(naked_functions)]

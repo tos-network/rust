@@ -323,8 +323,8 @@ pub fn test_variadic_fnptr() {
     assert_eq!(p.hash(&mut s), q.hash(&mut s));
 }
 
-// sbf doesn't support thread locals
-#[cfg(not(target_family = "solana"))]
+// tbf doesn't support thread locals
+#[cfg(not(target_family = "tos"))]
 #[test]
 fn write_unaligned_drop() {
     thread_local! {

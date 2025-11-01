@@ -1,21 +1,21 @@
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::io::{self, BorrowedCursor, IoSlice, IoSliceMut};
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub struct Stdin;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub struct Stdout;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub type Stderr = Stdout;
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl Stdin {
     pub const fn new() -> Stdin {
         Stdin
     }
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl io::Read for Stdin {
     #[inline]
     fn read(&mut self, _buf: &mut [u8]) -> io::Result<usize> {
@@ -60,14 +60,14 @@ impl io::Read for Stdin {
     }
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl Stdout {
     pub const fn new() -> Stdout {
         Stdout
     }
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl io::Write for Stdout {
     #[inline]
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
@@ -103,10 +103,10 @@ impl io::Write for Stdout {
     }
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub const STDIN_BUF_SIZE: usize = 0;
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 pub fn is_ebadf(_err: &io::Error) -> bool {
     true
 }

@@ -11,14 +11,14 @@ type c_int = i16;
 type c_int = i32;
 
 // memcpy/memmove/memset have optimized implementations on some architectures
-#[cfg(not(target_os = "solana"))]
+#[cfg(not(target_os = "tos"))]
 #[cfg_attr(
     all(not(feature = "no-asm"), target_arch = "x86_64"),
     path = "x86_64.rs"
 )]
 mod impls;
 
-#[cfg(not(target_os = "solana"))]
+#[cfg(not(target_os = "tos"))]
 intrinsics! {
     #[mem_builtin]
     pub unsafe extern "C" fn memcpy(dest: *mut u8, src: *const u8, n: usize) -> *mut u8 {
@@ -67,7 +67,7 @@ intrinsics! {
 // number of store operations is greater than 8 the memory operation
 // is performed in the run-time system instead, by calling the
 // corresponding "C" function.
-#[cfg(all(target_os = "solana", not(target_feature = "static-syscalls")))]
+#[cfg(all(target_os = "tos", not(target_feature = "static-syscalls")))]
 mod syscalls {
     unsafe extern "C" {
         pub fn sol_memcpy_(dest: *mut u8, src: *const u8, n: u64);
@@ -77,7 +77,7 @@ mod syscalls {
     }
 }
 
-#[cfg(all(target_os = "solana", target_feature = "static-syscalls"))]
+#[cfg(all(target_os = "tos", target_feature = "static-syscalls"))]
 mod syscalls {
 
     #[inline]
@@ -109,10 +109,10 @@ mod syscalls {
     }
 }
 
-#[cfg(target_os = "solana")]
+#[cfg(target_os = "tos")]
 use self::syscalls::*;
 
-#[cfg(target_os = "solana")]
+#[cfg(target_os = "tos")]
 #[cfg_attr(
     all(feature = "mem-unaligned", not(feature = "mangled-names")),
     unsafe(no_mangle)
@@ -122,7 +122,7 @@ pub unsafe extern "C" fn memcpy(dest: *mut u8, src: *const u8, n: usize) -> *mut
     dest
 }
 
-#[cfg(target_os = "solana")]
+#[cfg(target_os = "tos")]
 #[cfg_attr(
     all(feature = "mem-unaligned", not(feature = "mangled-names")),
     unsafe(no_mangle)
@@ -132,7 +132,7 @@ pub unsafe extern "C" fn memmove(dest: *mut u8, src: *const u8, n: usize) -> *mu
     dest
 }
 
-#[cfg(target_os = "solana")]
+#[cfg(target_os = "tos")]
 #[cfg_attr(
     all(feature = "mem-unaligned", not(feature = "mangled-names")),
     unsafe(no_mangle)
@@ -142,7 +142,7 @@ pub unsafe extern "C" fn memset(s: *mut u8, c: c_int, n: usize) -> *mut u8 {
     s
 }
 
-#[cfg(target_os = "solana")]
+#[cfg(target_os = "tos")]
 #[cfg_attr(
     all(feature = "mem-unaligned", not(feature = "mangled-names")),
     unsafe(no_mangle)

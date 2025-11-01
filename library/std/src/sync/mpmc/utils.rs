@@ -3,7 +3,7 @@ use crate::ops::{Deref, DerefMut};
 
 /// Pads and aligns a value to the length of a cache line.
 #[derive(Clone, Copy, Default, Hash, PartialEq, Eq)]
-#[cfg_attr(target_family = "solana", repr(align(8)))]
+#[cfg_attr(target_family = "tos", repr(align(8)))]
 // Starting from Intel's Sandy Bridge, spatial prefetcher is now pulling pairs of 64-byte cache
 // lines at a time, so we have to align to 128 bytes rather than 64.
 //
@@ -67,7 +67,7 @@ use crate::ops::{Deref, DerefMut};
         target_arch = "mips64r6",
         target_arch = "riscv64",
         target_arch = "s390x",
-        target_family = "solana",
+        target_family = "tos",
     )),
     repr(align(64))
 )]

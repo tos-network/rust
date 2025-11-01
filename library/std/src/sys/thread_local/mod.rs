@@ -29,11 +29,11 @@ cfg_if::cfg_if! {
         target_os = "uefi",
         target_os = "zkvm",
         target_os = "trusty",
-        target_os = "solana",
+        target_os = "tos",
     ))] {
         mod no_threads;
         pub use no_threads::{EagerStorage, LazyStorage, thread_local_inner};
-        #[cfg(not(target_family = "solana"))]
+        #[cfg(not(target_family = "tos"))]
         pub(crate) use no_threads::{LocalPointer, local_pointer};
     } else if #[cfg(target_thread_local)] {
         mod native;
@@ -119,7 +119,7 @@ pub(crate) mod guard {
         } else if #[cfg(target_os = "solid_asp3")] {
             mod solid;
             pub(crate) use solid::enable;
-        } else if #[cfg(target_os = "solana")] {
+        } else if #[cfg(target_os = "tos")] {
 
         } else {
             mod key;

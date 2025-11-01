@@ -1,6 +1,6 @@
 //! Common code for printing backtraces.
 #![forbid(unsafe_op_in_unsafe_fn)]
-#![cfg(not(target_family = "solana"))]
+#![cfg(not(target_family = "tos"))]
 
 use crate::backtrace_rs::{self, BacktraceFmt, BytesOrWideString, PrintFmt};
 use crate::borrow::Cow;

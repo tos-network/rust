@@ -88,22 +88,22 @@ mod tests;
 // `Backtrace`, but that's a relatively small price to pay relative to capturing
 // a backtrace or actually symbolizing it.
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::backtrace_rs::{self, BytesOrWideString};
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::ffi::c_void;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::panic::UnwindSafe;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::sync::LazyLock;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::sync::atomic::Ordering::Relaxed;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::sync::atomic::{Atomic, AtomicU8};
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::sys::backtrace::{lock, output_filename, set_image_base};
 use crate::fmt;
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use crate::env;
 
 /// A captured OS thread stack backtrace.
@@ -141,11 +141,11 @@ pub enum BacktraceStatus {
 enum Inner {
     Unsupported,
     Disabled,
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     Captured(LazyLock<Capture, LazyResolve>),
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 struct Capture {
     actual_start: usize,
     frames: Vec<BacktraceFrame>,
@@ -159,21 +159,21 @@ fn _assert_send_sync() {
 /// A single frame of a backtrace.
 #[unstable(feature = "backtrace_frames", issue = "79676")]
 pub struct BacktraceFrame {
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     frame: RawFrame,
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     symbols: Vec<BacktraceSymbol>,
 }
 
 #[derive(Debug)]
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 enum RawFrame {
     Actual(backtrace_rs::Frame),
     #[cfg(test)]
     Fake,
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 struct BacktraceSymbol {
     name: Option<Vec<u8>>,
     filename: Option<BytesOrWide>,
@@ -181,7 +181,7 @@ struct BacktraceSymbol {
     colno: Option<u32>,
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 enum BytesOrWide {
     Bytes(Vec<u8>),
     Wide(Vec<u16>),
@@ -189,7 +189,7 @@ enum BytesOrWide {
 
 #[stable(feature = "backtrace", since = "1.65.0")]
 impl fmt::Debug for Backtrace {
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         let capture = match &self.inner {
             Inner::Unsupported => return fmt.write_str("<unsupported>"),
@@ -214,7 +214,7 @@ impl fmt::Debug for Backtrace {
         dbg.finish()
     }
 
-    #[cfg(target_family = "solana")]
+    #[cfg(target_family = "tos")]
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(fmt, "<unsupported>")
     }
@@ -222,20 +222,20 @@ impl fmt::Debug for Backtrace {
 
 #[unstable(feature = "backtrace_frames", issue = "79676")]
 impl fmt::Debug for BacktraceFrame {
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut dbg = fmt.debug_list();
         dbg.entries(&self.symbols);
         dbg.finish()
     }
 
-    #[cfg(target_family = "solana")]
+    #[cfg(target_family = "tos")]
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(fmt, "<unsupported>")
     }
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl fmt::Debug for BacktraceSymbol {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         // FIXME: improve formatting: https://github.com/rust-lang/rust/issues/65280
@@ -262,7 +262,7 @@ impl fmt::Debug for BacktraceSymbol {
     }
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl fmt::Debug for BytesOrWide {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         output_filename(
@@ -280,7 +280,7 @@ impl fmt::Debug for BytesOrWide {
 impl Backtrace {
     /// Returns whether backtrace captures are enabled through environment
     /// variables.
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     fn enabled() -> bool {
         // Cache the result of reading the environment variables to make
         // backtrace captures speedy, because otherwise reading environment
@@ -303,7 +303,7 @@ impl Backtrace {
     }
 
     /// Captures a stack backtrace of the current thread.
-    #[cfg(any(target_arch = "bpf", target_arch = "sbf"))]
+    #[cfg(any(target_arch = "bpf", target_arch = "tbf"))]
     fn enabled() -> bool {
         false
     }
@@ -359,7 +359,7 @@ impl Backtrace {
 
     // Capture a backtrace which start just before the function addressed by
     // `ip`
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     fn create(ip: usize) -> Backtrace {
         let _lock = lock();
         let mut frames = Vec::new();
@@ -393,7 +393,7 @@ impl Backtrace {
         Backtrace { inner }
     }
 
-    #[cfg(target_family = "solana")]
+    #[cfg(target_family = "tos")]
     fn create(_ip: usize) -> Backtrace {
         Backtrace {
             inner: Inner::Unsupported
@@ -409,7 +409,7 @@ impl Backtrace {
         match self.inner {
             Inner::Unsupported => BacktraceStatus::Unsupported,
             Inner::Disabled => BacktraceStatus::Disabled,
-            #[cfg(not(target_family = "solana"))]
+            #[cfg(not(target_family = "tos"))]
             Inner::Captured(_) => BacktraceStatus::Captured,
         }
     }
@@ -419,7 +419,7 @@ impl<'a> Backtrace {
     /// Returns an iterator over the backtrace frames.
     #[must_use]
     #[unstable(feature = "backtrace_frames", issue = "79676")]
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     pub fn frames(&'a self) -> &'a [BacktraceFrame] {
         if let Inner::Captured(c) = &self.inner { &c.frames } else { &[] }
     }
@@ -427,7 +427,7 @@ impl<'a> Backtrace {
     /// Returns an iterator over the backtrace frames.
     #[must_use]
     #[unstable(feature = "backtrace_frames", issue = "79676")]
-    #[cfg(target_family = "solana")]
+    #[cfg(target_family = "tos")]
     pub fn frames(&'a self) -> &'a [BacktraceFrame] {
         &[]
     }
@@ -435,7 +435,7 @@ impl<'a> Backtrace {
 
 #[stable(feature = "backtrace", since = "1.65.0")]
 impl fmt::Display for Backtrace {
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         let capture = match &self.inner {
             Inner::Unsupported => return fmt.write_str("unsupported backtrace"),
@@ -483,13 +483,13 @@ impl fmt::Display for Backtrace {
         Ok(())
     }
 
-    #[cfg(target_family = "solana")]
+    #[cfg(target_family = "tos")]
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(fmt, "<unsupported>")
     }
 }
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 mod helper {
     use super::*;
     pub(super) type LazyResolve = impl (FnOnce() -> Capture) + Send + Sync + UnwindSafe;
@@ -527,10 +527,10 @@ mod helper {
         }
     }
 }
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 use helper::*;
 
-#[cfg(not(target_family = "solana"))]
+#[cfg(not(target_family = "tos"))]
 impl RawFrame {
     fn ip(&self) -> *mut c_void {
         match self {

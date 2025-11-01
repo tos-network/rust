@@ -25,7 +25,7 @@
 // gate-test-sparc_target_feature
 // gate-test-x87_target_feature
 // gate-test-m68k_target_feature
-// gate-test-sbf_target_feature
+// gate-test-tbf_target_feature
 
 #[target_feature(enable = "x87")]
 //~^ ERROR: currently unstable

@@ -143,9 +143,9 @@ mod array;
 mod ascii;
 mod ascii_char;
 mod asserting;
-#[cfg(not(any(target_arch = "bpf", target_arch = "sbf")))]
+#[cfg(not(any(target_arch = "bpf", target_arch = "tbf")))]
 mod async_iter;
-#[cfg(not(any(target_arch = "bpf", target_arch = "sbf")))]
+#[cfg(not(any(target_arch = "bpf", target_arch = "tbf")))]
 mod atomic;
 mod bool;
 mod bstr;
@@ -157,7 +157,7 @@ mod const_ptr;
 mod convert;
 mod ffi;
 mod floats;
-#[cfg(not(target_arch = "sbf"))]
+#[cfg(not(target_arch = "tbf"))]
 mod fmt;
 mod future;
 mod hash;

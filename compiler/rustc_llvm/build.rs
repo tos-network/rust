@@ -25,7 +25,7 @@ const OPTIONAL_COMPONENTS: &[&str] = &[
     "riscv",
     "xtensa",
     "bpf",
-    "sbf",
+    "tbf",
 ];
 
 const REQUIRED_COMPONENTS: &[&str] =

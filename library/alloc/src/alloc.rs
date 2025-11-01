@@ -423,7 +423,7 @@ pub mod __alloc_error_handler {
     // called via generated `__rust_alloc_error_handler` if there is no
     // `#[alloc_error_handler]`.
     #[rustc_std_internal_symbol]
-    #[cfg(not(target_family = "solana"))]
+    #[cfg(not(target_family = "tos"))]
     pub unsafe fn __rdl_oom(size: usize, _align: usize) -> ! {
         unsafe extern "Rust" {
             // This symbol is emitted by rustc next to __rust_alloc_error_handler.
@@ -443,7 +443,7 @@ pub mod __alloc_error_handler {
     }
 
     #[rustc_std_internal_symbol]
-    #[cfg(target_family = "solana")]
+    #[cfg(target_family = "tos")]
     pub unsafe fn __rdl_oom(size: usize, _align: usize) -> ! {
         core::panicking::panic_nounwind_fmt(format_args!(
             "memory allocation of {size} bytes failed"

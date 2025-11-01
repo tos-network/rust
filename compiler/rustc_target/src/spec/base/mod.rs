@@ -25,7 +25,7 @@ pub(crate) mod netbsd;
 pub(crate) mod nto_qnx;
 pub(crate) mod openbsd;
 pub(crate) mod redox;
-pub(crate) mod sbf_base;
+pub(crate) mod tbf_base;
 pub(crate) mod solaris;
 pub(crate) mod solid;
 pub(crate) mod teeos;
