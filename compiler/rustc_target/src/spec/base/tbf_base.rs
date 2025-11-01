@@ -141,7 +141,7 @@ pub(crate) fn opts(version: &'static str) -> TargetOptions {
 
 pub(crate) fn tbf_target(version: &'static str) -> Target {
     Target {
-        llvm_target: "bpf".into(),
+        llvm_target: "tbf".into(),
         pointer_width: 64,
         arch: "tbf".into(),
         data_layout: "e-m:e-p:64:64-i64:64-n32:64-S128".into(),

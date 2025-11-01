@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 
+change-id = 142379
+
 # Sample TOML configuration file for building Rust.
 #
 # To configure rustbuild, copy this file to the directory from which you will be
@@ -117,6 +119,9 @@ download-ci-llvm = false
 # General build configuration options
 # =============================================================================
 [build]
+
+# Number of jobs to run in parallel (default is number of CPUs)
+jobs = 8
 
 # Build triple for the original snapshot compiler. This must be a compiler that
 # nightlies are already produced for. The current platform must be able to run
